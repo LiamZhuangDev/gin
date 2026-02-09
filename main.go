@@ -2,6 +2,7 @@ package main
 
 import (
 	helloworld "github.com/LiamZhuangDev/gin/hello_world"
+	"github.com/LiamZhuangDev/gin/project"
 	"github.com/LiamZhuangDev/gin/routing"
 )
 
@@ -15,4 +16,5 @@ func main() {
 	routing.GroupBasis()
 	routing.Group4Middleware()
 	routing.NestedGroup()
+	project.ProductAPITest()
 }

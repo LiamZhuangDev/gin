@@ -36,7 +36,7 @@ func FormParams() {
 		})
 	})
 
-	r.POST("/login/v2", func(ctx *gin.Context) {
+	r.POST("/login/binding", func(ctx *gin.Context) {
 		var req LoginRequest
 		if err := ctx.ShouldBind(&req); err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{

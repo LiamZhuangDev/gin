@@ -13,7 +13,7 @@ import (
 func GroupBasis() {
 	r := gin.Default()
 
-	// Group following routes:
+	// Group following endpoints:
 	// r.GET("/api/v1/users", getUsers)
 	// r.POST("/api/v1/users", createUser)
 	// r.GET("/api/v1/orders", getOrders)
