@@ -9,4 +9,7 @@ func main() {
 	helloworld.Pong()
 	routing.HttpMethods()
 	routing.PathParams()
+	routing.QueryParams()
+	routing.FormParams()
+	routing.JSONFormParams()
 }
