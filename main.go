@@ -12,4 +12,7 @@ func main() {
 	routing.QueryParams()
 	routing.FormParams()
 	routing.JSONFormParams()
+	routing.GroupBasis()
+	routing.Group4Middleware()
+	routing.NestedGroup()
 }
