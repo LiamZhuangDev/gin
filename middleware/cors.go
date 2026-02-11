@@ -14,7 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func myCORSMiddleware() gin.HandlerFunc {
+func MyCORSMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		origin := ctx.Request.Header.Get("Origin")
 		if origin != "" {
@@ -34,7 +34,7 @@ func myCORSMiddleware() gin.HandlerFunc {
 	}
 }
 
-func ginOfficialCORSMiddleware(r *gin.Engine) {
+func GinOfficialCORSMiddleware(r *gin.Engine) {
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"http://localhost:3000"}
 	config.AllowCredentials = true

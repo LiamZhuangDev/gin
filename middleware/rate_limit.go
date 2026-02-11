@@ -7,10 +7,7 @@ import (
 	"golang.org/x/time/rate"
 )
 
-func RateLimitMiddleware() gin.HandlerFunc {
-	// allows requests up to rate 10 and permits bursts of at most 20 tokens
-	limiter := rate.NewLimiter(10, 20)
-
+func RateLimitMiddleware(limiter *rate.Limiter) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if !limiter.Allow() {
 			ctx.AbortWithStatusJSON(http.StatusTooManyRequests, gin.H{
