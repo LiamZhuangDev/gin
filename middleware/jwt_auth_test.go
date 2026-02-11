@@ -1,6 +1,7 @@
 package middleware_test
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -18,7 +19,11 @@ func setupRouter() *gin.Engine {
 	authorized.Use(middleware.AuthMiddleware())
 	{
 		authorized.GET("/profile", func(c *gin.Context) {
-			c.String(http.StatusOK, "access profile allowed")
+			role := c.GetString("role")
+
+			c.JSON(http.StatusOK, gin.H{
+				"role": role,
+			})
 		})
 	}
 
@@ -29,6 +34,7 @@ func setupRouter() *gin.Engine {
 func createTestToken() string {
 	claims := jwt.MapClaims{
 		"user_id": 123,
+		"role":    "admin",
 		"exp":     time.Now().Add(time.Hour * 24).Unix(),
 	}
 
@@ -80,5 +86,37 @@ func TestNoToken(t *testing.T) {
 
 	if w.Code != http.StatusUnauthorized {
 		t.Fatalf("request should pass, got %d", w.Code)
+	}
+}
+
+func TestTokenClaim(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	r := setupRouter()
+	w := httptest.NewRecorder()
+	req := httptest.NewRequest("GET", "/api/profile", nil)
+	token := createTestToken()
+	req.Header.Set("Authorization", "Bearer "+token)
+
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("request should pass, got %d", w.Code)
+	}
+
+	// check body
+	var res map[string]any
+	t.Log(w.Body.String())
+	if err := json.Unmarshal(w.Body.Bytes(), &res); err != nil {
+		t.Fatal(err)
+	}
+
+	role, ok := res["role"].(string)
+	if !ok {
+		t.Fatalf("role is not string: %T", res["role"])
+	}
+
+	if role != "admin" {
+		t.Fatalf("expected admin, but got %s", res["role"])
 	}
 }

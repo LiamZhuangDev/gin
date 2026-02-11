@@ -1,7 +1,8 @@
 // 1. JSON Web Token (JWT) is a way to authenticate requests using a signed token instead of sever-stored sessions.
 // 2. user logs in once -> server gives a token -> client sends token on every request -> server verifies -> allow or deny
-// 3. JWT has 3 parts: header, payload and signature.
-// payload is NOT encrypted, only signed. Anyone can read it, but they can't modify it without breaking the signature.
+// 3. JWT has 3 parts: header, payload (claims) and signature.
+// payload (claims) is NOT encrypted, only signed. They are things the token claims are true about the user.
+// Anyone can read it, but they can't modify it without breaking the signature.
 // payload example:
 // {
 //   "user_id": 123,
@@ -46,6 +47,23 @@ func AuthMiddleware() gin.HandlerFunc {
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
+
+		// extract claims
+		claims, ok := token.Claims.(jwt.MapClaims)
+		if !ok {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
+		// read role
+		role, ok := claims["role"]
+		if !ok {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
+		// save into gin context
+		c.Set("role", role)
 
 		c.Next()
 	}
