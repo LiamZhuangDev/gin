@@ -27,7 +27,36 @@ func UploadFile(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message":  "file upload successfully",
+		"message":  "file uploaded",
 		"filename": filename,
+	})
+}
+
+func UploadFiles(c *gin.Context) {
+	form, err := c.MultipartForm()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+	}
+
+	files := form.File["files"]
+	var filenames []string
+
+	for _, f := range files {
+		filename := filepath.Base(f.Filename)
+		dst := filepath.Join("uploads", filename)
+		if err := c.SaveUploadedFile(f, dst); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		filenames = append(filenames, filename)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message":   "files uploaded",
+		"filenames": filenames,
 	})
 }
