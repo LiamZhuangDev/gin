@@ -1,20 +1,21 @@
 # Install
-1. install protoc compiler, reads .proto files.
+1. install protoc compiler, reads .proto files.<br>
 `sudo apt install protobuf-compiler`
 
-2. install protobuf Go plugin, generates go code.
-`go install google.golang.org/protobuf/cmd/protoc-gen-go@latest`
+2. install protobuf Go plugin, generates go code.<br>
+`go install google.golang.org/protobuf/cmd/protoc-gen-go@latest`<br>
 `go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest`
 
-3. ensure $GOPATH/bin is on $PATH, protoc will find protobuf Go plugin in $PATH.
+3. ensure $GOPATH/bin is on $PATH, protoc will find protobuf Go plugin in $PATH.<br>
 `export PATH="$(go env GOPATH)/bin:$PATH"`
 
-4. install protobuf runtime, required by generated .pd.go code.
+4. install protobuf runtime, required by generated .pd.go code.<br>
 `go get google.golang.org/protobuf/proto`
 
 # Create a .proto file
 
-# Compile and generate Go file, for example the following command will generate `user.pb.go` from the given `user.proto`. 
+# Compile and generate Go file
+For example the following command will generate `user.pb.go` from the given `user.proto`:<br>
 `protoc --go_out=. --go_opt=paths=source_relative user.proto`
 
 # JSON vs Protobuf
@@ -43,10 +44,9 @@
 | Maximum performance              | Protobuf      |
 | Need easy debugging              | JSON          |
 
-# Protobuf → Go Type Mapping
-1. Simple types<br>
+# Protobuf → Go Type Mapping (simple & complex types)
 | Protobuf type | Go type (generated) |
-| ------------- | ------------------- |
+| :------------ | :------------------ |
 | double        | float64             |
 | float         | float32             |
 | int32         | int32               |
@@ -63,9 +63,8 @@
 | string        | string              |
 | bytes         | []byte              |
 
-2. Complex types<br>
 | proto       | Go          |
-| ----------- | ----------- |
+| :---------- | :---------- |
 | repeated    | slice       |
 | message     | pointer     |
 | enum        | int32       |
