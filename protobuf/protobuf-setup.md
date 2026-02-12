@@ -44,7 +44,7 @@
 | Need easy debugging              | JSON          |
 
 # Protobuf → Go Type Mapping
-1. Simple types
+1. Simple types<br>
 | Protobuf type | Go type (generated) |
 | ------------- | ------------------- |
 | double        | float64             |
@@ -63,7 +63,7 @@
 | string        | string              |
 | bytes         | []byte              |
 
-2. Complex types
+2. Complex types<br>
 | proto       | Go          |
 | ----------- | ----------- |
 | repeated    | slice       |
