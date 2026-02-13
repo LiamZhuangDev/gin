@@ -7,8 +7,14 @@
 `go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest`
 
 3. ensure `$GOPATH/bin` is on `$PATH`, protoc will find protobuf Go plugin in `$PATH`.<br>
-`export PATH="$(go env GOPATH)/bin:$PATH"`
 
+`export PATH="$(go env GOPATH)/bin:$PATH" // for the current shell`
+
+```
+// Permanent
+echo 'export PATH="$PATH:$HOME/go/bin"' >> ~/.bashrc
+source ~/.bashrc
+```
 4. install protobuf runtime, required by generated .pd.go code.<br>
 `go get google.golang.org/protobuf/proto`
 

@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package user;
+package user_proto.v1;
 
-option go_package = "./pb";
+option go_package = "user_proto/v1;user_protov1";
 
 // 用户消息定义
 message User {
@@ -11,8 +11,8 @@ message User {
   string email = 3;
   int32 age = 4;
   bool active = 5;
-  repeated string tags = 6;  // 数组
-  map<string, string> metadata = 7;  // 映射
+  repeated string tags = 6; // 数组
+  map<string, string> metadata = 7; // 映射
 }
 
 // 用户列表

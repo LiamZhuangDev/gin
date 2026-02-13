@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	pb "github.com/LiamZhuangDev/gin/protobuf"
+	pb "github.com/LiamZhuangDev/gin/user_proto/v1"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"
