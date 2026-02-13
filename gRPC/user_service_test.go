@@ -2,16 +2,33 @@ package grpc
 
 import (
 	"log"
+	"net"
 	"testing"
 	"time"
 
 	user_rpcv1 "github.com/LiamZhuangDev/gin/user_rpc/v1"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/grpc"
 )
+
+func startGRPCServer() {
+	lis, err := net.Listen("tcp", ":50051")
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+
+	grpcServer := grpc.NewServer()
+	user_rpcv1.RegisterUserServiceServer(grpcServer, &UserServer{})
+
+	log.Println("gRPC server is running on port 50051...")
+	if err := grpcServer.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
+}
 
 func TestUserServiceClient(t *testing.T) {
 	// Start the gRPC server in a separate goroutine
-	go StartGRPCServer()
+	go startGRPCServer()
 
 	// Wait for the server to start
 	time.Sleep(1 * time.Second)
