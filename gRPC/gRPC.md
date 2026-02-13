@@ -58,3 +58,19 @@ protoc --go_out=. --go_opt=paths=source_relative \
        --go-grpc_out=. --go-grpc_opt=paths=source_relative \
        user.proto
 ```
+---
+Typical real project structure
+```
+.
+├── proto/
+│   └── user.proto
+├── user_rpc/v1/
+│   ├── user.pb.go
+│   └── user_grpc.pb.go
+├── internal/
+│   └── service/
+│       └── user_server.go   <-- implementation
+├── cmd/
+│   ├── server/main.go
+│   └── client/main.go
+```
