@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "./pd";
+
+// syntax: rpc Method (RequestType) returns (ResponseType);
+service UserService {
+  rpc GetUser(GetUserRequest) returns (User);
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  rpc ListUsers(ListUsersRequest) returns (UserList);
+  rpc StreamUsers(StreamUsersRequest) returns (stream User);
+  rpc BatchCreateUsers(stream CreateUserRequest) returns (BatchCreateUsersResponse);
+  rpc Chat(stream ChatMessage) returns (stream ChatMessage);
+}
+
+message User {
+  int64 id = 1;
+  string username = 2;
+  string email = 3;
+  int32 age = 4;
+  bool active = 5;
+}
+
+message GetUserRequest {
+  int64 id = 1;
+}
+
+message CreateUserRequest {
+  string username = 1;
+  string email = 2;
+  int32 age = 3;
+}
+
+message CreateUserResponse {
+  User user = 1;
+  bool success = 2;
+  string message = 3;
+}
+
+message ListUsersRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+}
+
+message UserList {
+  repeated User users = 1;
+  int32 total = 2;
+}
+
+message StreamUsersRequest {
+  int32 page_size = 1;
+}
+
+message BatchCreateUsersResponse {
+  int32 success_count = 1;
+  int32 failure_count = 2;
+}
+
+message ChatMessage {
+  int64 user_id = 1;
+  string message = 2;
+  int64 timestamp = 3; //stored as Unix time (seconds or milliseconds since Jan 1, 1970 UTC).
+}
