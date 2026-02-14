@@ -8,7 +8,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const maxUploadSize = 10 << 20 // 10 MB
+// 1 MB = 1024 * 1024 = 2^20 bytes
+// 10 MB = 10 * (2^20) bytes
+const maxUploadSize = 10 << 20
+
 var allowedTypes = map[string]bool{
 	".jpg": true,
 	".png": true,
