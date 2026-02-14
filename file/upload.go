@@ -3,9 +3,17 @@ package file
 import (
 	"net/http"
 	"path/filepath"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
+
+const maxUploadSize = 10 << 20 // 10 MB
+var allowedTypes = map[string]bool{
+	".jpg": true,
+	".png": true,
+	".pdf": true,
+}
 
 func UploadFile(c *gin.Context) {
 	file, err := c.FormFile("file")
@@ -16,8 +24,26 @@ func UploadFile(c *gin.Context) {
 		return
 	}
 
+	// check file size
+	if file.Size > maxUploadSize {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "file too large",
+		})
+		return
+	}
+
 	// sanitize the filename, helps prevent path traversal attacks
 	filename := filepath.Base(file.Filename) // strips dir path and only keep file name
+
+	// check file type
+	ext := strings.ToLower(filepath.Ext(filename))
+	if !allowedTypes[ext] {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "file type not allowed",
+		})
+		return
+	}
+
 	dst := filepath.Join("uploads", filename)
 	if err := c.SaveUploadedFile(file, dst); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
